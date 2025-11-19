@@ -13,9 +13,17 @@
   .timer{font-size:84px;font-weight:800;margin:8px 0;letter-spacing:2px;text-shadow:0 12px 30px rgba(0,240,255,0.08);transition:opacity 0.12s linear, filter 0.12s linear, transform 0.12s linear}
   .sub{opacity:0.8}
   .controls{display:flex;gap:12px;justify-content:center;margin-top:10px}
-  button{padding:12px 18px;border-radius:12px;border:none;font-weight:700;cursor:pointer}
-  #toggle{background:linear-gradient(90deg,var(--neon1),var(--neon2));color:#07060a}
-  #reset{background:rgba(255,255,255,0.06);color:#fff}
+  
+  /* --- ボタン共通スタイル --- */
+  button{padding:12px 18px;border-radius:12px;border:none;font-weight:700;cursor:pointer;transition: transform 0.1s ease, box-shadow 0.1s ease;}
+  button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.3);}
+  button:active:not(:disabled){transform:translateY(0px);box-shadow:none;}
+  button:disabled{opacity:0.5;cursor:not-allowed;}
+
+  .btn-primary{background:linear-gradient(90deg,var(--neon1),var(--neon2));color:#07060a}
+  .btn-secondary{background:rgba(255,255,255,0.06);color:#fff}
+  /* --- --- */
+
   .stats{display:flex;gap:12px;justify-content:center;margin-top:14px}
   .stat{background:rgba(255,255,255,0.02);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
   #hint{font-size:14px;color:rgba(255,255,255,0.72);margin-top:8px}
@@ -24,111 +32,113 @@
   .big-confetti{position:fixed;inset:0;pointer-events:none;z-index:3}
   @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
 
+  /* --- ホーム画面スタイル --- */
+  #home-screen .title {font-size: 32px; letter-spacing: 2px; text-shadow: 0 0 10px var(--neon1), 0 0 20px var(--neon2);}
+  #play-btn {padding: 18px 40px; font-size: 20px; margin-top: 10px;}
+  h2 {
+    font-size: 18px; opacity: 0.6; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 8px; margin: 30px 0 15px 0;
+  }
+  #ranking-list {
+    list-style-type: none; padding: 0; margin: 0; text-align: left;
+    font-size: 16px; max-height: 200px; overflow-y: auto;
+  }
+  #ranking-list li {
+    padding: 8px 12px; border-radius: 6px;
+    background: rgba(0,0,0,0.2);
+    margin-bottom: 6px;
+    display: flex; justify-content: space-between;
+  }
+  #ranking-list li:nth-child(1) { background: rgba(255,215,0,0.1); font-weight: 700; color: #ffd700;}
+  #ranking-list li:nth-child(2) { background: rgba(192,192,192,0.1); }
+  #ranking-list li:nth-child(3) { background: rgba(205,127,50,0.1); }
+  #ranking-list .rank-num { opacity: 0.6; margin-right: 15px; min-width: 20px;}
+  #ranking-list .rank-score { font-weight: 700; }
+  #ranking-list .no-scores { text-align: center; opacity: 0.5; padding: 20px 0; }
+  /* --- --- */
+
+
   /* パチンコ風光演出 */
-  .pachinko-flash {
-    position:fixed; inset:0;
-    background: radial-gradient(circle at center, rgba(255,255,255,0.9), rgba(255,255,255,0.1), transparent 80%);
-    mix-blend-mode:screen;
-    z-index:100;
-    animation: flash 0.6s ease-out forwards;
-  }
-  @keyframes flash {
-    0%{opacity:0;}
-    20%{opacity:1;}
-    100%{opacity:0;}
-  }
-
-  .pachi-spark {
-    position:fixed; width:6px; height:6px;
-    background: radial-gradient(circle, #fff, transparent);
-    border-radius:50%; pointer-events:none;
-    mix-blend-mode:screen; z-index:101;
-    animation: spark 0.8s ease-out forwards;
-  }
-  @keyframes spark {
-    from {transform:scale(1) translate(0,0); opacity:1;}
-    to {transform:scale(2) translate(var(--tx), var(--ty)); opacity:0;}
-  }
-
-  .bigText {
-    position:fixed; inset:0;
-    display:flex; align-items:center; justify-content:center;
-    font-size:96px; font-weight:900;
-    color:gold; text-shadow:0 0 20px #fff, 0 0 40px #f0f;
-    opacity:0; z-index:200;
-    animation: showBig 1.2s ease-out forwards;
-  }
-  @keyframes showBig {
-    0%{transform:scale(0.6);opacity:0;}
-    40%{transform:scale(1.2);opacity:1;}
-    100%{transform:scale(1);opacity:0;}
-  }
-
-  /* 虹色確変テキスト */
-  .kakuhen {
-    position:fixed;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-    font-weight:900;
-    font-size:18vw;
-    color:red;
-    text-shadow:0 0 20px #fff, 0 0 40px #f0f, 0 0 80px gold;
-    z-index:9999;
-    animation: rainbowText 2s linear infinite, fadeOut 10s linear forwards;
-  }
-
-  @keyframes rainbowText {
-    0% { color: red; }
-    15% { color: orange; }
-    30% { color: yellow; }
-    45% { color: green; }
-    60% { color: cyan; }
-    75% { color: blue; }
-    90% { color: magenta; }
-    100% { color: red; }
-  }
-  @keyframes fadeOut {
-    0%{opacity:1;}
-    90%{opacity:1;}
-    100%{opacity:0;}
-  }
+  .pachinko-flash{position:fixed;inset:0;background:radial-gradient(circle at center,rgba(255,255,255,0.9),rgba(255,255,255,0.1),transparent 80%);mix-blend-mode:screen;z-index:100;animation:flash 0.6s ease-out forwards}
+  @keyframes flash{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
+  
+  .pachi-spark{position:fixed;width:6px;height:6px;background:radial-gradient(circle,#fff,transparent);border-radius:50%;pointer-events:none;mix-blend-mode:screen;z-index:101;animation:spark 0.8s ease-out forwards}
+  @keyframes spark{from{transform:scale(1) translate(0,0);opacity:1}to{transform:scale(2) translate(var(--tx),var(--ty));opacity:0}}
+  
+  .bigText{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-size:96px;font-weight:900;color:gold;text-shadow:0 0 20px #fff,0 0 40px #f0f;opacity:0;z-index:200;animation:showBig 1.2s ease-out forwards}
+  @keyframes showBig{0%{transform:scale(0.6);opacity:0}40%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:0}}
+  
+  .kakuhen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Hiragino Kaku Gothic ProN',Meiryo,sans-serif;font-weight:900;font-size:18vw;color:red;text-shadow:0 0 20px #fff,0 0 40px #f0f,0 0 80px gold;z-index:9999;animation:rainbowText 2s linear infinite,fadeOut 10s linear forwards}
+  @keyframes rainbowText{0%{color:red}15%{color:orange}30%{color:yellow}45%{color:green}60%{color:cyan}75%{color:blue}90%{color:magenta}100%{color:red}}
+  @keyframes fadeOut{0%{opacity:1}90%{opacity:1}100%{opacity:0}}
 </style>
 </head>
 <body>
 <canvas id="canvas"></canvas>
 
-<div class="wrap overlayUI">
-  <div class="panel">
-    <div class="title">10秒に合わせろ！</div>
-    <div class="timer" id="display">0.000</div>
-    <div class="sub">狙え、正確に。スペースキー／ボタンで開始／停止。</div>
-
-    <div class="controls">
-      <button id="toggle">Start</button>
-      <button id="reset">Reset Best</button>
+<div id="home-screen" class="overlayUI">
+  <div class="wrap">
+    <div class="panel">
+      <div class="title">Flashy 10s Timer</div>
+      <div class="sub">10秒に合わせろ！</div>
+      
+      <div class="controls">
+        <button id="play-btn" class="btn-primary">Play</button>
+      </div>
+      
+      <h2>Top 10 Ranking</h2>
+      <ol id="ranking-list">
+        </ol>
     </div>
+  </div>
+</div>
 
-    <div class="stats">
-      <div class="stat">ベスト: <strong id="best">-- ms</strong></div>
-      <div class="stat">今回の差: <strong id="diff">-- ms</strong></div>
-      <div class="stat">スコア: <strong id="score">--</strong></div>
+<div id="game-screen" class="overlayUI" style="display: none;">
+  <div class="wrap">
+    <div class="panel">
+      <div class="title">10秒に合わせろ！</div>
+      <div class="timer" id="display">0.000</div>
+      <div class="sub">狙え、正確に。スペースキー／ボタンで開始／停止。</div>
+
+      <div class="controls">
+        <button id="toggle" class="btn-primary">Start</button>
+        <button id="home-btn" class="btn-secondary">Home</button>
+        <button id="reset" class="btn-secondary">Reset Rank</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat">ベスト: <strong id="best">-- ms</strong></div>
+        <div class="stat">今回の差: <strong id="diff">-- ms</strong></div>
+        <div class="stat">スコア: <strong id="score">--</strong></div>
+      </div>
+
+      <div id="hint">10秒ぴったりで「パチンコ演出」発動！100ms以内でも光る！</div>
     </div>
-
-    <div id="hint">10秒ぴったりで「パチンコ演出」発動！100ms以内でも光る！</div>
   </div>
 </div>
 
 <script>
 (() => {
+  // --- 定数とグローバル変数 ---
+  const TARGET = 10.0;
+  const RANKING_KEY = 'flashy10_top10'; // Top 10スコアの配列
+  const OLD_BEST_KEY = 'flashy10_best_ms'; // 古いベストスコアのキー
+  let running = false;
+  let startTime = 0;
+  let lastElapsed = 0;
+  let debugMode = false;
+  let zeroPressCount = 0;
+  let heartbeatTimer = null;
+
+  // --- DOM要素 ---
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
-  let W = canvas.width = innerWidth;
-  let H = canvas.height = innerHeight;
-  addEventListener('resize', ()=>{W = canvas.width = innerWidth; H = canvas.height = innerHeight;});
-
+  const homeScreen = document.getElementById('home-screen');
+  const gameScreen = document.getElementById('game-screen');
+  const playBtn = document.getElementById('play-btn');
+  const homeBtn = document.getElementById('home-btn');
+  const rankingList = document.getElementById('ranking-list');
+  
   const display = document.getElementById('display');
   const toggleBtn = document.getElementById('toggle');
   const resetBtn = document.getElementById('reset');
@@ -136,141 +146,191 @@
   const diffEl = document.getElementById('diff');
   const scoreEl = document.getElementById('score');
 
-  const TARGET = 10.0;
-  let running = false;
-  let startTime = 0;
-  let lastElapsed = 0;
-  let debugMode = false;     // ← デバッグモードフラグ
-  let zeroPressCount = 0;    // ← 0キー押下回数カウント
-  let heartbeatTimer = null;
+  let W = canvas.width = innerWidth;
+  let H = canvas.height = innerHeight;
+  addEventListener('resize', ()=>{W = canvas.width = innerWidth; H = canvas.height = innerHeight;});
 
+  // --- 画面切り替え ---
+  function showScreen(screenId) {
+    if (running) stop(); // ゲーム中にホームに戻ったら強制停止
+    homeScreen.style.display = (screenId === 'home-screen') ? 'block' : 'none';
+    gameScreen.style.display = (screenId === 'game-screen') ? 'block' : 'none';
+    
+    if (screenId === 'home-screen') {
+      loadRankings(); // ホーム画面表示時にランキングを再読み込み
+    } else if (screenId === 'game-screen') {
+      // ゲーム画面表示時にスコアをリセット
+      diffEl.textContent = '-- ms';
+      scoreEl.textContent = '--';
+      display.textContent = '0.000';
+      resetDisplayStyle();
+    }
+  }
+
+  // --- ランキング処理 ---
+  function migrateOldScore() {
+    const oldBest = localStorage.getItem(OLD_BEST_KEY);
+    if (oldBest) {
+      const rankings = getRankings();
+      rankings.push(Number(oldBest));
+      saveRankings(rankings);
+      localStorage.removeItem(OLD_BEST_KEY);
+      console.log('古いスコアを新しいランキングに移行しました。');
+    }
+  }
+
+  function getRankings() {
+    return JSON.parse(localStorage.getItem(RANKING_KEY)) || [];
+  }
+
+  function saveRankings(rankings) {
+    rankings.sort((a, b) => a - b); // 昇順（スコアが低い＝優秀）
+    const top10 = rankings.slice(0, 10);
+    localStorage.setItem(RANKING_KEY, JSON.stringify(top10));
+    return top10;
+  }
+  
+  function addScoreToRanking(ms) {
+    const rankings = getRankings();
+    rankings.push(ms);
+    const newRankings = saveRankings(rankings);
+    loadRankings(); // UIを更新
+  }
+
+  function loadRankings() {
+    const rankings = getRankings();
+    
+    // 1. ホーム画面のランキングリストを更新
+    rankingList.innerHTML = '';
+    if (rankings.length === 0) {
+      rankingList.innerHTML = '<li class="no-scores">まだスコアがありません</li>';
+    } else {
+      rankings.forEach((score, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div><span class="rank-num">#${index + 1}</span> <span>${score.toFixed(0)} ms</span></div>
+          <span class="rank-score">${Math.max(0,Math.round(10000-score*12))} Pts</span>
+        `;
+        rankingList.appendChild(li);
+      });
+    }
+    
+    // 2. ゲーム画面のベストスコアを更新
+    if (rankings.length > 0) {
+      bestEl.textContent = `${rankings[0].toFixed(0)} ms`;
+    } else {
+      bestEl.textContent = '-- ms';
+    }
+  }
+
+  // --- オーディオ関連 (元のまま) ---
   const AC = new (window.AudioContext || window.webkitAudioContext)();
   async function ensureAudioUnlocked(){ try{ if(AC.state === 'suspended') await AC.resume(); }catch(e){} }
-
   function playSuccessSound(){
-    const now = AC.currentTime;
-    const master = AC.createGain(); master.gain.value=0.001; master.connect(AC.destination);
-    master.gain.exponentialRampToValueAtTime(0.1, now + 0.01);
-    master.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
-    const freqs = [880,1100,1320];
-    freqs.forEach((f,i)=>{
-      const o=AC.createOscillator();o.type='sine';o.frequency.value=f;
-      const g=AC.createGain();g.gain.value=0.0;o.connect(g);g.connect(master);
-      const t=now+i*0.1;
-      g.gain.linearRampToValueAtTime(0.2,t+0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001,t+0.6);
+    const now = AC.currentTime; const master = AC.createGain(); master.gain.value=0.001; master.connect(AC.destination);
+    master.gain.exponentialRampToValueAtTime(0.1, now + 0.01); master.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+    [880,1100,1320].forEach((f,i)=>{
+      const o=AC.createOscillator();o.type='sine';o.frequency.value=f; const g=AC.createGain();g.gain.value=0.0;o.connect(g);g.connect(master);
+      const t=now+i*0.1; g.gain.linearRampToValueAtTime(0.2,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.6);
       o.start(t);o.stop(t+0.8);
     });
   }
-
   function clickSound(){
-    const o=AC.createOscillator();const g=AC.createGain();
-    o.type='sine';o.frequency.value=900;g.gain.value=0.0001;o.connect(g);g.connect(AC.destination);
-    const now=AC.currentTime;
-    g.gain.exponentialRampToValueAtTime(0.06,now+0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001,now+0.1);
+    const o=AC.createOscillator();const g=AC.createGain(); o.type='sine';o.frequency.value=900;g.gain.value=0.0001;o.connect(g);g.connect(AC.destination);
+    const now=AC.currentTime; g.gain.exponentialRampToValueAtTime(0.06,now+0.01); g.gain.exponentialRampToValueAtTime(0.0001,now+0.1);
     o.start(now);o.stop(now+0.12);
   }
-
-  // 心臓音
   function playHeartbeat(){
-    const o=AC.createOscillator();
-    const g=AC.createGain();
-    o.type='sine';o.frequency.value=60;
-    g.gain.value=0.0001;
-    o.connect(g);g.connect(AC.destination);
-    const now=AC.currentTime;
-    g.gain.exponentialRampToValueAtTime(0.2,now+0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001,now+0.25);
-    o.start(now);o.stop(now+0.3);
+    const o=AC.createOscillator(); const g=AC.createGain(); o.type='sine';o.frequency.value=60; g.gain.value=0.0001;
+    o.connect(g);g.connect(AC.destination); const now=AC.currentTime; g.gain.exponentialRampToValueAtTime(0.2,now+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001,now+0.25); o.start(now);o.stop(now+0.3);
   }
 
+  // --- エフェクト関連 (元のまま) ---
   const confetti=[];
-  function spawnConfetti(n=60){
-    for(let i=0;i<n;i++){
-      confetti.push({x:Math.random()*W,y:-10,vx:(Math.random()-0.5)*4,vy:Math.random()*3+2,r:Math.random()*6+4,hue:Math.random()*360,rot:Math.random()*6});
-    }
-  }
-
-  function spawnBurst(x,y,colorHue,n=30){
-    for(let i=0;i<n;i++){
-      const a=Math.random()*Math.PI*2;const s=Math.random()*6+2;
-      confetti.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:Math.random()*4+2,hue:colorHue,rot:0});
-    }
-  }
-
-  function update(dt){
-    for(let i=confetti.length-1;i>=0;i--){
-      const c=confetti[i];c.vy+=0.06;c.x+=c.vx;c.y+=c.vy;c.rot+=0.06;
-      if(c.y>H+30) confetti.splice(i,1);
-    }
-  }
-
+  function spawnConfetti(n=60){for(let i=0;i<n;i++){confetti.push({x:Math.random()*W,y:-10,vx:(Math.random()-0.5)*4,vy:Math.random()*3+2,r:Math.random()*6+4,hue:Math.random()*360,rot:Math.random()*6});}}
+  function spawnBurst(x,y,colorHue,n=30){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2;const s=Math.random()*6+2;confetti.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:Math.random()*4+2,hue:colorHue,rot:0});}}
+  function update(dt){for(let i=confetti.length-1;i>=0;i--){const c=confetti[i];c.vy+=0.06;c.x+=c.vx;c.y+=c.vy;c.rot+=0.06;if(c.y>H+30)confetti.splice(i,1);}}
   function draw(){
-    ctx.clearRect(0,0,W,H);
-    const g=ctx.createLinearGradient(0,0,0,H);
-    g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,0.25)');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-
+    ctx.clearRect(0,0,W,H); const g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,0.25)'); ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
     const t=performance.now()/1000;
-    for(let i=0;i<6;i++){
-      ctx.beginPath();
-      const x=(i+1)*W/7+120*Math.sin(t*0.6+i);
-      ctx.arc(x,H*0.22+30*Math.cos(t*0.7+i),220,0,Math.PI*2);
-      ctx.fillStyle=`hsla(${60*i+140},80%,50%,${0.02+i*0.002})`;
-      ctx.fill();
-    }
-
-    for(const c of confetti){
-      ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.rot);
-      ctx.fillStyle=`hsl(${c.hue} 80% 60%)`;
-      ctx.fillRect(-c.r/2,-c.r/2,c.r,c.r*1.6);
-      ctx.restore();
-    }
+    for(let i=0;i<6;i++){ctx.beginPath();const x=(i+1)*W/7+120*Math.sin(t*0.6+i);ctx.arc(x,H*0.22+30*Math.cos(t*0.7+i),220,0,Math.PI*2);ctx.fillStyle=`hsla(${60*i+140},80%,50%,${0.02+i*0.002})`;ctx.fill();}
+    for(const c of confetti){ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.rot);ctx.fillStyle=`hsl(${c.hue} 80% 60%)`;ctx.fillRect(-c.r/2,-c.r/2,c.r,c.r*1.6);ctx.restore();}
   }
-
   let last=performance.now();
   function loop(now){
     const dt=now-last;last=now;
     if(running){
-      const elapsed=(performance.now()-startTime)/1000;
-      lastElapsed=elapsed;
+      const elapsed=(performance.now()-startTime)/1000; lastElapsed=elapsed;
       display.textContent=elapsed.toFixed(3);
-      const blurAmt = Math.min(6, (elapsed/5)*6);
-      const opacity = Math.max(0, 1 - elapsed/5);
-      display.style.filter=`blur(${blurAmt}px)`;
-      display.style.opacity=opacity;
-      display.style.visibility = elapsed>=5 ? 'hidden' : 'visible';
-
-      // 自動停止（デバッグモード）
-      if(debugMode && elapsed>=10.0){ stop(); }
+      const blurAmt=Math.min(6,(elapsed/5)*6); const opacity=Math.max(0,1-elapsed/5);
+      display.style.filter=`blur(${blurAmt}px)`; display.style.opacity=opacity;
+      display.style.visibility=elapsed>=5?'hidden':'visible';
+      if(debugMode&&elapsed>=10.0){stop();}
     }
-    update(dt);draw();
-    requestAnimationFrame(loop);
+    update(dt);draw(); requestAnimationFrame(loop);
+  }
+  function resetDisplayStyle(){display.style.opacity=1;display.style.filter='none';display.style.visibility='visible';}
+  function randomTextExplosion(){
+    const words=['確定！','超激アツ！','大当り！','ド派手！','連チャン！'];
+    for(let i=0;i<20;i++){
+      const txt=document.createElement('div');txt.textContent=words[Math.floor(Math.random()*words.length)];
+      txt.style.cssText=`position:fixed;left:${Math.random()*W}px;top:${Math.random()*H}px;font-size:${40+Math.random()*60}px;font-weight:900;color:hsl(${Math.random()*360},100%,70%);text-shadow:0 0 10px #fff,0 0 20px #f0f;transform:rotate(${(Math.random()-0.5)*40}deg);opacity:0;transition:opacity 0.3s ease-out;z-index:9999;`;
+      document.body.appendChild(txt); requestAnimationFrame(()=>txt.style.opacity=1); setTimeout(()=>txt.remove(),7000);
+    }
   }
 
-  function resetDisplayStyle(){
-    display.style.opacity=1;display.style.filter='none';display.style.visibility='visible';
-  }
+  // ★★★ エラー修正箇所 ★★★
+  function triggerPachinkoEffect(ms){
+    const isPerfect=ms<=10; const bg=document.createElement('div');
+    // 修正(1): zIndexを 1 -> 100 に変更 (UIパネル(2)より手前に)
+    bg.style.cssText=`position:fixed;inset:0;background:radial-gradient(circle at center,gold,#ffec8a,#b8860b);z-index:100;animation:bgFlash ${isPerfect?5:3}s linear forwards;`;
+    document.body.appendChild(bg); setTimeout(()=>bg.remove(),(isPerfect?5000:3000));
+    
+    const big=document.createElement('div'); 
+    big.className='bigText'; 
+    big.style.animation=`rainbowText ${isPerfect?5:3}s linear infinite`;
+    big.textContent=isPerfect?'確定！！':'10.000!! PERFECT!!'; 
+    // 修正(2): big.style.zIndex='2'; を削除 (CSSの z-index: 200 を使うため)
+    document.body.appendChild(big);
+    setTimeout(()=>big.remove(),(isPerfect?5000:3000));
 
+    const duration=isPerfect?5000:3000; const sparkCount=isPerfect?200:80;
+    const interval=setInterval(()=>{
+      for(let i=0;i<sparkCount/10;i++){
+        const s=document.createElement('div'); s.className='pachi-spark';
+        const tx=(Math.random()-0.5)*(isPerfect?1000:600); const ty=(Math.random()-0.5)*(isPerfect?700:400);
+        s.style.setProperty('--tx',`${tx}px`); s.style.setProperty('--ty',`${ty}px`);
+        s.style.left=`${W/2}px`; s.style.top=`${H/2}px`;
+        // 修正(3): s.style.zIndex='3'; を削除 (CSSの z-index: 101 を使うため)
+        document.body.appendChild(s); setTimeout(()=>s.remove(),800);
+      }
+    },200);
+    setTimeout(()=>clearInterval(interval),duration);
+  }
+  // ★★★ 修正箇所ここまで ★★★
+
+
+  // --- ゲームロジック (Start / Stop) ---
   async function start(){
     await ensureAudioUnlocked();
-    running=true;toggleBtn.textContent='Stop';resetBtn.disabled=true;
+    running=true;toggleBtn.textContent='Stop';
+    resetBtn.disabled=true;
+    homeBtn.disabled = true; // Homeボタンも無効化
     startTime=performance.now();last=performance.now();
     resetDisplayStyle();clickSound();
-    debugMode=false;
-    zeroPressCount=0;
-
-    // 5〜9秒の鼓動音
-    heartbeatTimer = setInterval(()=>{
-      const e = (performance.now()-startTime)/1000;
-      if(e>=5 && e<=9) playHeartbeat();
+    debugMode=false; zeroPressCount=0;
+    heartbeatTimer=setInterval(()=>{
+      const e=(performance.now()-startTime)/1000;
+      if(e>=5&&e<=9)playHeartbeat();
     },800);
   }
 
   async function stop(){
     if(!running)return;
-    running=false;toggleBtn.textContent='Start';resetBtn.disabled=false;
+    running=false;toggleBtn.textContent='Start';
+    resetBtn.disabled=false;
+    homeBtn.disabled = false; // Homeボタンを有効化
     if(heartbeatTimer){clearInterval(heartbeatTimer);heartbeatTimer=null;}
 
     const elapsed=lastElapsed;
@@ -283,29 +343,18 @@
     const score=Math.max(0,Math.round(10000-ms*12));
     scoreEl.textContent=score;
 
-    let best=localStorage.getItem('flashy10_best_ms');
-    best=best?Number(best):null;
-    if(best===null||ms<best){
-      localStorage.setItem('flashy10_best_ms',ms);
-      bestEl.textContent=`${ms.toFixed(0)} ms`;
-    }
-
+    addScoreToRanking(ms);
+    
     spawnBurst(W/2,H/2,ms<150?160:320,40);
 
     if(ms<=100){
       playSuccessSound();
       spawnConfetti(120);
-      triggerPachinkoEffect(ms);
-
-      if(ms<=10){
-        randomTextExplosion();
-      }
+      triggerPachinkoEffect(ms); // 修正が適用された関数が呼ばれる
+      if(ms<=10){randomTextExplosion();}
       if(ms<=9){
-        const kakuhen = document.createElement('div');
-        kakuhen.className = 'kakuhen';
-        kakuhen.textContent = '確変';
-        kakuhen.style.fontSize='18vw';
-        kakuhen.style.zIndex='99999';
+        const kakuhen=document.createElement('div');kakuhen.className='kakuhen';
+        kakuhen.textContent='確変';kakuhen.style.fontSize='18vw';kakuhen.style.zIndex='99999';
         document.body.appendChild(kakuhen);
         setTimeout(()=>kakuhen.remove(),10000);
       }
@@ -314,81 +363,30 @@
     }
   }
 
-  function randomTextExplosion(){
-    const words = ['確定！','超激アツ！','大当り！','ド派手！','連チャン！'];
-    for(let i=0;i<20;i++){
-      const txt=document.createElement('div');
-      txt.textContent=words[Math.floor(Math.random()*words.length)];
-      txt.style.position='fixed';
-      txt.style.left=`${Math.random()*W}px`;
-      txt.style.top=`${Math.random()*H}px`;
-      txt.style.fontSize=`${40+Math.random()*60}px`;
-      txt.style.fontWeight='900';
-      txt.style.color=`hsl(${Math.random()*360},100%,70%)`;
-      txt.style.textShadow='0 0 10px #fff, 0 0 20px #f0f';
-      txt.style.transform=`rotate(${(Math.random()-0.5)*40}deg)`;
-      txt.style.opacity=0;
-      txt.style.transition='opacity 0.3s ease-out';
-      txt.style.zIndex=9999;
-      document.body.appendChild(txt);
-      requestAnimationFrame(()=>txt.style.opacity=1);
-      setTimeout(()=>txt.remove(),7000);
-    }
-  }
-
-  function triggerPachinkoEffect(ms){
-  const isPerfect = ms <= 10;
-  const bg = document.createElement('div');
-  bg.style.position='fixed';
-  bg.style.inset=0;
-  bg.style.background='radial-gradient(circle at center, gold, #ffec8a, #b8860b)';
-  bg.style.zIndex='1'; // ← 修正：黒背景(canvas)より1つ前に配置
-  bg.style.animation=`bgFlash ${isPerfect ? 5 : 3}s linear forwards`;
-  document.body.appendChild(bg);
-  setTimeout(()=>bg.remove(),(isPerfect?5000:3000));
-
-  const big=document.createElement('div');
-  big.className='bigText';
-  big.style.animation=`rainbowText ${isPerfect ? 5 : 3}s linear infinite`;
-  big.textContent=isPerfect?'確定！！':'10.000!! PERFECT!!';
-  big.style.zIndex='2'; // ← 背景より上に出るように
-  document.body.appendChild(big);
-  setTimeout(()=>big.remove(),(isPerfect?5000:3000));
-
-  const duration=isPerfect?5000:3000;
-  const sparkCount=isPerfect?200:80;
-  const interval=setInterval(()=>{
-    for(let i=0;i<sparkCount/10;i++){
-      const s=document.createElement('div');
-      s.className='pachi-spark';
-      const tx=(Math.random()-0.5)*(isPerfect?1000:600);
-      const ty=(Math.random()-0.5)*(isPerfect?700:400);
-      s.style.setProperty('--tx',`${tx}px`);
-      s.style.setProperty('--ty',`${ty}px`);
-      s.style.left=`${W/2}px`;
-      s.style.top=`${H/2}px`;
-      s.style.zIndex='3'; // ← スパークもさらに上
-      document.body.appendChild(s);
-      setTimeout(()=>s.remove(),800);
-    }
-  },200);
-  setTimeout(()=>clearInterval(interval),duration);
-}
-
-
-  toggleBtn.addEventListener('click',()=>{!running?start():stop();});
+  // --- イベントリスナー ---
+  
+  // ホーム画面
+  playBtn.addEventListener('click', () => showScreen('game-screen'));
+  
+  // ゲーム画面
+  toggleBtn.addEventListener('click', ()=>{!running?start():stop();});
+  homeBtn.addEventListener('click', () => showScreen('home-screen'));
+  
   resetBtn.addEventListener('click',()=>{
-    localStorage.removeItem('flashy10_best_ms');
-    bestEl.textContent='--';diffEl.textContent='-- ms';scoreEl.textContent='--';
+    if (confirm('本当にすべてのランキングデータをリセットしますか？')) {
+      localStorage.removeItem(RANKING_KEY);
+      loadRankings(); // UIをリセット
+      diffEl.textContent='-- ms';
+      scoreEl.textContent='--';
+    }
   });
 
-  // Spaceキーで通常スタート・ストップ
+  // 共通キーボード操作
   addEventListener('keydown',e=>{
-    if(e.code==='Space'){
+    if (e.code === 'Space' && gameScreen.style.display !== 'none') {
       e.preventDefault();
       !running?start():stop();
     }
-    // ★ 0キーを3回押すとデバッグモードON
     if(running && e.code==='Digit0'){
       zeroPressCount++;
       if(zeroPressCount>=3 && !debugMode){
@@ -398,10 +396,13 @@
     }
   });
 
-  requestAnimationFrame(loop);
+  // --- 初期化 ---
+  migrateOldScore(); // 古いスコア形式からの移行
+  loadRankings();    // ランキングを読み込んで表示
+  requestAnimationFrame(loop); // メインループ開始
+  
 })();
 </script>
-
 
 </body>
 </html>
